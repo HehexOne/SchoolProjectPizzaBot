@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DB_Explore</title>
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+</head>
+<body style="background-color: darkgrey;">
+<br/>
+{% for order in orders %}
+    <div class="card" style="background-color: white;  position: absolute; left: 10%; right: 10%; width: auto;">
+    <h1>ID: {{ order.id }}</h1>
+    <p>Адрес: {{ order.address }}</p>
+    <p>ID пиццы: {{ order.pizza }}</p>
+    <p>ID ресторана: {{ order.rest }}</p>
+    </div>
+    <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+{% endfor %}
+</body>
+</html>
