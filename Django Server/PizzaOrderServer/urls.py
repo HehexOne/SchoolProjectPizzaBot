@@ -15,10 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from PizzaOrders.views import show_db, add_note
+from PizzaOrders.views import show_db, add_note, delete_all
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', show_db),
-    path("<str:address>/<int:pizza>/<int:rest>", add_note)
+    path("<str:address>/<int:pizza>/<int:rest>", add_note),
+    path("delete-all/", delete_all)
 ]

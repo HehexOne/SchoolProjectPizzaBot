@@ -18,7 +18,7 @@ import (
 
 const token = "NDg3ODYxNzAwNTQ1MjE2NTEz.DnT0NA.-12IDIZL8zWzmzmV4Md5LsDr4g0"
 const AuthToken = "d6d57dbfc3b74b0f8700d954257837c5"
-const TgToken = "651393093:AAHRCCVVLWDRaj4zl7fv2jbfdVuxLNhFR-c"
+const TgToken = "753452254:AAHLObs3KpZMq4K1soPSLrXS6Aetc8BWXpU"
 var serversShut = make(map[string]bool)
 var bot *telebot.Bot
 
@@ -72,8 +72,17 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate){
 	}
 	speechArray := strings.Split(speech, ":")
 	if speechArray[0] == "command" {
-		http.PostForm("http://127.0.0.1:8000/", url.Values{"address": {speechArray[1]}, "pizza": {speechArray[2]}, "rest": {speechArray[3]}})
-		s.ChannelMessageSend(m.ChannelID, m.Author.Mention() + " Заказ добавлен в базу!")
+		resp, err := http.PostForm("http://127.0.0.1:8000/", url.Values{"address": {speechArray[1]},
+			"pizza": {speechArray[2]},
+			"rest": {speechArray[3]},
+			"owner_platform": {"Discord"},
+			"owner_id": {"@" + m.Author.Username}})
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer resp.Body.Close()
+		body, err := ioutil.ReadAll(resp.Body)
+		s.ChannelMessageSend(m.ChannelID, m.Author.Mention() + " Заказ добавлен в базу! Номер вашего заказа: " + string(body) + ".")
 		return
 	}
 	s.ChannelMessageSend(m.ChannelID, m.Author.Mention() + " " + speech)
@@ -133,8 +142,17 @@ func onTgMessage(m *telebot.Message){
 	}
 	speechArray := strings.Split(speech, ":")
 	if speechArray[0] == "command" {
-		http.PostForm("http://127.0.0.1:8000/", url.Values{"address": {speechArray[1]}, "pizza": {speechArray[2]}, "rest": {speechArray[3]}})
-		bot.Send(m.Sender, "Заказ добавлен в базу!")
+		resp, err := http.PostForm("http://127.0.0.1:8000/", url.Values{"address": {speechArray[1]},
+			"pizza": {speechArray[2]},
+			"rest": {speechArray[3]},
+			"owner_platform": {"Telegram"},
+			"owner_id": {"@" + m.Sender.Username}})
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer resp.Body.Close()
+		body, err := ioutil.ReadAll(resp.Body)
+		bot.Send(m.Sender, "Заказ добавлен в базу! Номер вашего заказа: " + string(body) + ".")
 		return
 	}
 	bot.Send(m.Sender, speech)
