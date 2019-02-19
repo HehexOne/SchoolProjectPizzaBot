@@ -16,9 +16,9 @@ import (
 	"time"
 )
 
-const token = "NDg3ODYxNzAwNTQ1MjE2NTEz.DnT0NA.-12IDIZL8zWzmzmV4Md5LsDr4g0"
+const token = "" // Discord
 const AuthToken = "d6d57dbfc3b74b0f8700d954257837c5"
-const TgToken = "753452254:AAHLObs3KpZMq4K1soPSLrXS6Aetc8BWXpU"
+const TgToken = "" // Telegram
 var serversShut = make(map[string]bool)
 var bot *telebot.Bot
 
